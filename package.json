@@ -1,0 +1,38 @@
+{
+  "name": "subdomain-storage",
+  "version": "1.0.0",
+  "description": "Share data between subdomains",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StAngerr/flip-object.git"
+  },
+  "author": "sto",
+  "license": "MIT",
+  "typings": "./*.d.ts",
+  "devDependencies": {
+    "@types/jest": "29.5.12",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
+    "prettier": "3.3.2",
+    "ts-jest": "29.1.5",
+    "ts-node": "10.9.2",
+    "typescript": "5.4.5"
+  },
+  "keywords": [
+    "subdomain-storage",
+    "storage",
+    "domain-storage",
+    "cross-domain-storage",
+    "cross-domain",
+    "cross-site",
+    "cross-site-storage",
+    "subdomain-data",
+    "subdomain-localstorage",
+    "crosssite-localstorage"
+  ]
+}
