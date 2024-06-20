@@ -21,9 +21,9 @@ import subdomainStorage from 'subdomain-storage';
 
 // Set configuration. Aplly this config on top level, before using storage
 subdomainStorage.setConfig({
-domain: '.example.com',
-cookiePrefix: 'sds_',
-expireTime: new Date('2030-01-01')
+  domain: '.example.com',
+  cookiePrefix: 'sds_',
+  expireTime: new Date('2030-01-01')
 });
 
 // Set an item
