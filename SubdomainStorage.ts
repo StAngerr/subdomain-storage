@@ -25,9 +25,7 @@ class SubdomainStorage implements Storage {
         const newStorage = new CookieManager();
         const stored = newStorage.getCookie();
 
-        this.addedKeys = Object.keys(stored);
         this.restoreState(stored);
-        this._length = Object.keys(stored).length;
         this.cookieStorage = newStorage;
     }
 
@@ -71,14 +69,15 @@ class SubdomainStorage implements Storage {
      * @param {string} value - The value of the item to add.
      */
     setItem(key: string, value: string): void {
-        if (!this.hasOwnProperty(key)) {
-            const valueAsString =
-                typeof value === 'string' ? value : convertValueToString(value);
-            this._length++;
-            this[key] = valueAsString;
-            this.addedKeys.push(key);
-            this.cookieStorage.addCookie(key, valueAsString);
-        }
+        if (!key)
+            throw new Error("Can't call setItem without key as first argument");
+
+        const valueAsString =
+            typeof value === 'string' ? value : convertValueToString(value);
+        this._length++;
+        this[key] = valueAsString;
+        this.addedKeys.push(key);
+        this.cookieStorage.addCookie(key, valueAsString);
     }
 
     /**
@@ -106,6 +105,7 @@ class SubdomainStorage implements Storage {
      */
     setConfig(config: StorageConfig) {
         if (config.cookiePrefix) {
+            this.clear();
             this.cookieStorage.cookiePrefix = config.cookiePrefix;
             this.restoreState(this.cookieStorage.getCookie());
         }
@@ -117,10 +117,28 @@ class SubdomainStorage implements Storage {
         }
     }
 
+    /**
+     * Syncs current instance with storage
+     */
+    sync() {
+        const stored = this.cookieStorage.getCookie();
+
+        for (const key in stored) {
+            if (!this.hasOwnProperty(key)) {
+                this.addedKeys.push(key);
+                this._length++;
+                this[key] = stored[key];
+            }
+        }
+    }
+
     private restoreState(currentCookies: { [key: string]: string }) {
         Object.entries(currentCookies).forEach(
             ([key, value]) => (this[key] = value),
         );
+        const keys = Object.keys(currentCookies);
+        this._length = keys.length;
+        this.addedKeys = keys;
     }
 }
 
