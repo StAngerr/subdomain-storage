@@ -1,3 +1,1 @@
-import subdomainStorage from './SubdomainStorage';
-
-export default subdomainStorage;
+export { default as subdomainStorage } from './SubdomainStorage';
