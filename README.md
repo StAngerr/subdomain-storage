@@ -23,11 +23,19 @@ import subdomainStorage from 'subdomain-storage';
 subdomainStorage.setConfig({
   domain: '.example.com',
   cookiePrefix: 'sds_',
-  expireTime: new Date('2030-01-01')
+  expireTime: new Date('2030-01-01'),
+  attributes: {
+    Path: '/test',
+    SameSite: 'Lax',
+    Partitioned: false
+  }
 });
 
 // Set an item
 subdomainStorage.setItem('key', 'value');
+
+// Set an item for specific url. This will set a cookie attribute Path for the url /settings
+subdomainStorage.setItem('key', 'value', { Path: '/settings' });
 
 // Get an item
 const value = subdomainStorage.getItem('key');
@@ -40,6 +48,10 @@ subdomainStorage.clear();
 
 // Get the number of items in storage
 const length = subdomainStorage.length;
+
+// This function updates any changes made to the cookie in the current session,
+// ensuring that the latest cookie values are reflected in the subdomain storage.
+subdomainStorage.sync();
 ```
 
 ## API Reference

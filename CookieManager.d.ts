@@ -2,7 +2,6 @@ export interface CookieAttributes {
     Domain?: string;
     Path?: string;
     Secure?: boolean;
-    HTTPOnly?: boolean;
     SameSite?: 'Strict' | 'Lax' | 'None';
     Partitioned?: boolean;
 }
