@@ -17,7 +17,7 @@ npm install subdomain-storage
 ## Usage
 
 ```javascript
-import subdomainStorage from 'subdomain-storage';
+import { subdomainStorage } from 'subdomain-storage';
 
 // Set configuration. Aplly this config on top level, before using storage
 subdomainStorage.setConfig({
@@ -27,7 +27,7 @@ subdomainStorage.setConfig({
   attributes: {
     Path: '/test',
     SameSite: 'Lax',
-    Partitioned: false
+    Partitioned: true
   }
 });
 
