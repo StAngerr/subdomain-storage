@@ -1,3 +1,5 @@
+import { CookieAttributes } from './CookieManager';
+
 /**
  * Converts a given value to a string representation.
  *
@@ -13,4 +15,32 @@ export const convertValueToString = (v: unknown): string => {
     }
 
     return JSON.stringify(v);
+};
+/**
+ * Checks if a value is null or undefined.
+ *
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is null or undefined, false otherwise.
+ */
+export const isNil = (value: unknown): boolean =>
+    value === null || value === undefined;
+/**
+ * Converts a configuration object to a cookie string.
+ *
+ * This function iterates over the key-value pairs of the configuration object and constructs
+ * a string suitable for setting cookies. Boolean values are included as directives if true,
+ * and other non-nil values are included as key-value pairs.
+ *
+ * @param {CookieAttributes} config - The configuration object containing cookie attributes.
+ * @returns {string} The cookie string representation of the configuration object.
+ */
+export const configToCookieString = (config: CookieAttributes): string => {
+    const cookieParts: string[] = [];
+
+    for (const [key, value] of Object.entries(config)) {
+        if (typeof value === 'boolean') {
+            if (value) cookieParts.push(`${key};`);
+        } else if (!isNil(value)) cookieParts.push(`${key}=${value};`);
+    }
+    return cookieParts.join(' ');
 };

@@ -1,3 +1,4 @@
+import { CookieAttributes } from './CookieManager';
 /**
  * Configuration options for the SubdomainStorage.
  */
@@ -5,6 +6,7 @@ export interface StorageConfig {
     domain: string;
     cookiePrefix?: string;
     expireTime?: Date;
+    attributes?: CookieAttributes;
 }
 /**
  * A class to manage storage using cookies within a specific subdomain.
@@ -35,13 +37,15 @@ declare class SubdomainStorage implements Storage {
      * Adds a new item to the storage.
      * @param {string} key - The key of the item to add.
      * @param {string} value - The value of the item to add.
+     * @param {CookieAttributes} [config] - Optional configuration for the cookie attributes.
      */
-    setItem(key: string, value: string): void;
+    setItem(key: string, value: string, config?: CookieAttributes): void;
     /**
      * Removes the item associated with the specified key.
      * @param {string} key - The key of the item to remove.
+     * @param {CookieAttributes} [config] - Optional configuration for the cookie attributes.
      */
-    removeItem(key: string): void;
+    removeItem(key: string, config?: CookieAttributes): void;
     /**
      * !!! Not implemented !!!
      */
@@ -51,6 +55,10 @@ declare class SubdomainStorage implements Storage {
      * @param {StorageConfig} config - The configuration options.
      */
     setConfig(config: StorageConfig): void;
+    /**
+     * Syncs current instance with storage
+     */
+    sync(): void;
     private restoreState;
 }
 declare const _default: SubdomainStorage;

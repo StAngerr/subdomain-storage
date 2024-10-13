@@ -1,4 +1,4 @@
-import CookieManager from './CookieManager';
+import CookieManager, { CookieAttributes } from './CookieManager';
 import { convertValueToString } from './utils';
 
 /**
@@ -8,6 +8,7 @@ export interface StorageConfig {
     domain: string;
     cookiePrefix?: string;
     expireTime?: Date;
+    attributes?: CookieAttributes;
 }
 
 /**
@@ -67,8 +68,9 @@ class SubdomainStorage implements Storage {
      * Adds a new item to the storage.
      * @param {string} key - The key of the item to add.
      * @param {string} value - The value of the item to add.
+     * @param {CookieAttributes} [config] - Optional configuration for the cookie attributes.
      */
-    setItem(key: string, value: string): void {
+    setItem(key: string, value: string, config?: CookieAttributes): void {
         if (!key)
             throw new Error("Can't call setItem without key as first argument");
 
@@ -77,18 +79,19 @@ class SubdomainStorage implements Storage {
         this._length++;
         this[key] = valueAsString;
         this.addedKeys.push(key);
-        this.cookieStorage.addCookie(key, valueAsString);
+        this.cookieStorage.addCookie(key, valueAsString, config);
     }
 
     /**
      * Removes the item associated with the specified key.
      * @param {string} key - The key of the item to remove.
+     * @param {CookieAttributes} [config] - Optional configuration for the cookie attributes.
      */
-    removeItem(key: string): void {
+    removeItem(key: string, config?: CookieAttributes): void {
         if (this.hasOwnProperty(key)) {
             delete this[key];
             this._length--;
-            this.cookieStorage.removeCookie(key);
+            this.cookieStorage.removeCookie(key, config);
         }
     }
 
@@ -115,6 +118,8 @@ class SubdomainStorage implements Storage {
         if (config.expireTime) {
             this.cookieStorage.expires = config.expireTime;
         }
+        if (config.attributes)
+            this.cookieStorage.setAttributes(config.attributes);
     }
 
     /**

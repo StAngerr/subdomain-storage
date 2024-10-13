@@ -64,6 +64,7 @@ describe('SubdomainStorage', () => {
         expect(storage.length).toBe(0);
         expect(storage['cookieStorage'].removeCookie).toHaveBeenCalledWith(
             'key1',
+            undefined,
         );
     });
 

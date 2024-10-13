@@ -1,3 +1,11 @@
+export interface CookieAttributes {
+    Domain?: string;
+    Path?: string;
+    Secure?: boolean;
+    HTTPOnly?: boolean;
+    SameSite?: 'Strict' | 'Lax' | 'None';
+    Partitioned?: boolean;
+}
 declare class CookieManager {
     /**
      * The prefix to use for cookie keys.
@@ -17,6 +25,15 @@ declare class CookieManager {
      * @type {Date}
      */
     private _expires;
+    /**
+     * Default attributes for the cookies.
+     * @private
+     * @type {CookieAttributes}
+     * @property {string} SameSite - The SameSite attribute for the cookies, default is 'None'.
+     * @property {boolean} Secure - Indicates if the cookies should be secure, default is true.
+     * @property {string} Path - The path for which the cookies are valid, default is '/'.
+     */
+    private _attributes;
     constructor();
     /**
      * Gets the domain for which the cookies are valid.
@@ -59,16 +76,24 @@ declare class CookieManager {
      * Adds a cookie with a specified key and value.
      * @param {string} key - The key for the cookie.
      * @param {string} value - The value for the cookie.
+     * @param {CookieAttributes} [config={}] - Optional configuration for the cookie attributes.
      */
-    addCookie(key: string, value: string): void;
+    addCookie(key: string, value: string, config?: CookieAttributes): void;
     /**
      * Removes a cookie with the specified key.
      * @param {string} key - The key for the cookie to be removed.
+     * @param {CookieAttributes} [config={}] - Optional configuration for the cookie attributes.
      */
-    removeCookie(key: string): void;
+    removeCookie(key: string, config?: CookieAttributes): void;
     /**
      * Clears all cookies that match the prefix.
      */
     clearCookies(): void;
+    /**
+     * Sets the default attributes for the cookies.
+     * @param {CookieAttributes} config - The configuration object containing the attributes to set.
+     * @returns {void}
+     */
+    setAttributes(config: CookieAttributes): void;
 }
 export default CookieManager;

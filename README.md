@@ -57,7 +57,7 @@ const length = subdomainStorage.length;
 - `setConfig(config: { domain: string, cookiePrefix?: string, expireTime?: Date }): void`: Sets the configuration for the storage. Accepts an object with the following properties:
   - `domain`: A parent domain that will allow sharing data between its subdomains. (type: string)
   - `cookiePrefix`: A prefix to add to cookie keys to prevent name collisions. Default value is 'sds_'. (type: string)
-  - `expireTime`: The expiration time for the cookies. Default is a long duration. (type: Date)
+  - `expireTime`: The expiration time for the cookies. Default is 50 years from now. (type: Date)
 - `sync(): void`
 
   This method is used to synchronize the current instance with the storage. For example, if you have apps opened in separate tabs, you can call this method on tab activation to sync with the internal cookie storage for situations when the storage was modified in another tab.

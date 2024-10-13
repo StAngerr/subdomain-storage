@@ -1,4 +1,5 @@
-import { convertValueToString } from '../utils';
+import { configToCookieString, convertValueToString, isNil } from '../utils';
+import { CookieAttributes } from '../CookieManager';
 
 describe('convertValueToString utility tests', () => {
     it('should convert a number to a string', () => {
@@ -30,5 +31,64 @@ describe('convertValueToString utility tests', () => {
             toString: () => 'custom string',
         };
         expect(convertValueToString(obj)).toBe('custom string');
+    });
+});
+
+describe('isNil utility tests', () => {
+    it('should return true for null', () => {
+        expect(isNil(null)).toBe(true);
+    });
+
+    it('should return true for undefined', () => {
+        expect(isNil(undefined)).toBe(true);
+    });
+
+    it('should return false for a number', () => {
+        expect(isNil(123)).toBe(false);
+    });
+
+    it('should return false for a string', () => {
+        expect(isNil('')).toBe(false);
+    });
+
+    it('should return false for an object', () => {
+        expect(isNil({})).toBe(false);
+    });
+
+    it('should return false for an array', () => {
+        expect(isNil(0)).toBe(false);
+    });
+});
+
+describe('configToCookieString utility tests', () => {
+    it('should convert a config object to a cookie string', () => {
+        const config = {
+            SameSite: 'None',
+            Secure: true,
+            Path: '/',
+        } as CookieAttributes;
+        expect(configToCookieString(config)).toBe(
+            'SameSite=None; Secure; Path=/;',
+        );
+    });
+
+    it('should handle boolean values correctly', () => {
+        const config = { Secure: true, HttpOnly: false } as CookieAttributes;
+        expect(configToCookieString(config)).toBe('Secure;');
+    });
+
+    it('should handle mixed types correctly', () => {
+        const config = {
+            SameSite: 'Lax',
+            Secure: true,
+            MaxAge: 3600,
+        } as CookieAttributes;
+        expect(configToCookieString(config)).toBe(
+            'SameSite=Lax; Secure; MaxAge=3600;',
+        );
+    });
+
+    it('should return an empty string for an empty config object', () => {
+        expect(configToCookieString({})).toBe('');
     });
 });
